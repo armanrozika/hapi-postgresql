@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+        <form method="POST" enctype="multipart/form-data">
+            <input id="pics" type="file" name="pic" accept="image/*">
+            <input type="submit">
+          </form>
+    <button id="btn">click</button>
+    <button id="getdata">Get data</button>
+    <button id="delete">delete</button>
+    <button id="update">update</button>
+    <script>
+        let btnUpdate = document.querySelector('#update')
+        btnUpdate.addEventListener('click', ()=>{
+            const dat = {
+                id: 1,
+                name: 'flaks',
+                price: 2000,
+                description: 'nothing special',
+                picurl: 'dadada'
+            }
+
+            fetch('http://localhost:8000/update', {
+                method: 'POST',
+                body: JSON.stringify(dat),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(res => res.json())
+            .then(response => console.log('Success:', JSON.stringify(response)))
+            .catch(error => console.error('Error:', error));
+        })
+
+
+
+
+        let btnDelete = document.querySelector('#delete')
+        btnDelete.addEventListener('click', ()=>{
+            const dat = {
+                id: 13
+            }
+             fetch('http://localhost:8000/delete', {
+                method: 'DELETE',
+                body: JSON.stringify(dat),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(res => res.json())
+            .then(response => console.log('Success:', JSON.stringify(response)))
+            .catch(error => console.error('Error:', error));
+        })
+
+        async function makeCall(){
+            
+            const fileInput = document.querySelector('#pics') ;
+            const formData = new FormData();
+
+            formData.append('file', fileInput.files[0]);
+
+            const options = {
+              method: 'POST',
+              body: formData,
+            };
+
+            await fetch('http://localhost:8000/upload', options).catch(error => console.error('Error:', error));
+            const data = {
+                name: 'mahmnudggh',
+                price: 44,
+                description: 'huhu',
+                picurl: 'http://local'
+            }
+
+            fetch('http://localhost:8000/post', {
+                method: 'POST',
+                body: JSON.stringify(data),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(res => res.json())
+            .then(response => console.log('Success:', JSON.stringify(response)))
+            .catch(error => console.error('Error:', error));
+            
+        }
+
+        // function makeCall(){
+        //     const data = {
+        //         name: 'mahmnudggh',
+        //         price: 44,
+        //         description: 'huhu',
+        //         picurl: 'wkwk'
+        //     }
+
+        //     fetch('http://localhost:3000/post', {
+        //         method: 'POST',
+        //         body: JSON.stringify(data),
+        //         headers: {
+        //             'Content-Type': 'application/json'
+        //         }
+        //     })
+        //     .then(res => res.json())
+        //     .then(response => console.log('Success:', JSON.stringify(response)))
+        //     .catch(error => console.error('Error:', error));
+        // }
+
+        let btn = document.querySelector('#btn');
+        btn.addEventListener('click', ()=>{
+            makeCall()
+        });
+
+
+        function getData(){
+            fetch('http://localhost:3000')
+            .then(res => res.json())
+            .then(data => console.log(data[0].name))
+        }
+
+        let btnGet = document.querySelector('#getdata')
+        btnGet.addEventListener('click', ()=>{
+            getData()
+        })
+       
+    </script>
+</body>
+</html>
